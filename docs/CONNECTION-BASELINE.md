@@ -1,11 +1,22 @@
-# DiPlay 0.2.14 connection integration
+# DiPlay 0.2.15 upstream integration
 
-Connection source: upstream `7887bb7bf2b52258e663a2a4ea1332382ed80ad8` (0.2.14).
+Current merge source: upstream `9e244d958afe6b8fd79ade49769ce25a944f397b` (0.2.15).
+Previous connection reset: upstream `7887bb7bf2b52258e663a2a4ea1332382ed80ad8` (0.2.14).
 Previous feature baseline: `8f53b27b3168aedb661e9f9bb7122ea344b75ada`.
-App version is `0.2.14`, aligned with upstream at the user's request.
-Version code increases to `38` so installed 0.2.14 builds can upgrade.
+App version is `0.2.15`, aligned with upstream at the user's request.
+Version code increases to `40` so installed fork builds can upgrade.
 
-## Connection scope
+## Full upstream merge
+
+This integration records both fork and upstream parents. Upstream settings, appearance,
+updates, video pacing, audio processing, Bluetooth and USB fixes are merged while retaining
+vehicle scanning, steering interception, projection and navigation/media output hooks.
+In-app updates use the fork release channel and its published APK checksums. The base
+app and scan client follow upstream Android 7.1 minimum; the separate GD bridge remains
+Android 9+. Factory-hotspot SDK and routed-interface experiments remain exclusively on
+`fix/geely-auto-connect-apk-20261008` and are not included in this main merge.
+
+## Previous connection reset scope
 
 Changed network files and connection transport files are copied from the pinned upstream
 revision: IPv4-first wireless selection, interface Bonjour, manual hotspot readiness and

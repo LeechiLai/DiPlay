@@ -10,7 +10,8 @@ android {
     // The matching .aidl remains the protocol source alongside this client.
     buildFeatures { aidl = false }
     defaultConfig {
-        minSdk = 28
+        // carlito | The client follows DiPlay; the separately installed GD bridge still needs Android 9.
+        minSdk = 25
         consumerProguardFiles("consumer-rules.pro")
     }
     compileOptions {

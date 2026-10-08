@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_vehicle_map_experimental">Mapa del vehículo (experimental)</string>
+    <string name="vehicle_audio_output_hint">La navegación tiene su propio canal. El resto del sonido usa el canal multimedia. La salida Bluetooth mantiene la música del coche y evita que se reproduzca por duplicado. Las llamadas y la voz siguen disponibles. Si no se detecta la reproducción Bluetooth, CarPlay continúa reproduciendo. Se aplica después de volver a conectar.</string>
+</resources>

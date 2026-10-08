@@ -2,7 +2,6 @@ package com.shilapi.xcertplay
 
 import android.content.Context
 import android.media.AudioAttributes
-import android.media.AudioFocusRequest
 import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
@@ -12,6 +11,7 @@ import android.os.Looper
 import android.util.Log
 import com.shilapi.xcertplay.vehicle.GeelyFactoryCarPlay
 import com.shilapi.xcertplay.media.AudioOutputDevice
+import com.shilapi.xcertplay.compat.AudioFocusRequestCompat
 import java.io.Closeable
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -41,7 +41,7 @@ internal class AudioChannelPreview(context: Context? = null, private val onUnava
         activeTrack.get()?.let { runCatching { it.stop() } }
         pending = worker.submit {
             var track: AudioTrack? = null
-            var focusRequest: AudioFocusRequest? = null
+            var focusRequest: AudioFocusRequestCompat? = null
             try {
                 if (closed || generation.get() != request) return@submit
                 val pcm = tone()
@@ -89,11 +89,11 @@ internal class AudioChannelPreview(context: Context? = null, private val onUnava
                 if (focusEnabled && audioManager != null) {
                     val focusAttributes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) built.audioAttributes
                         else attributes
-                    val focus = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
-                        .setAudioAttributes(focusAttributes)
-                        .build()
+                    // carlito | Reuse the same platform/legacy focus contract as playback.
+                    val focus = AudioFocusRequestCompat(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT,
+                        focusAttributes, AudioManager.OnAudioFocusChangeListener { }, mainHandler)
                     focusRequest = focus
-                    check(audioManager.requestAudioFocus(focus) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    check(focus.request(audioManager) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                         "Preview audio focus unavailable"
                     }
                 }
@@ -121,7 +121,7 @@ internal class AudioChannelPreview(context: Context? = null, private val onUnava
             } finally {
                 activeTrack.compareAndSet(track, null)
                 track?.let { runCatching { it.stop() }; runCatching { it.release() } }
-                focusRequest?.let { runCatching { audioManager?.abandonAudioFocusRequest(it) } }
+                focusRequest?.let { request -> audioManager?.let { manager -> runCatching { request.abandon(manager) } } }
             }
         }
     }

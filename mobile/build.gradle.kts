@@ -15,10 +15,11 @@ android {
 
     defaultConfig {
         applicationId = "com.shihab.diplay"
-        minSdk = 28
+        minSdk = 25
         targetSdk = 37
-        versionCode = 39
-        versionName = "0.2.14"
+        // carlito | Fork installs must upgrade from code 39 while matching upstream's name.
+        versionCode = 40
+        versionName = "0.2.15"
 
     }
 

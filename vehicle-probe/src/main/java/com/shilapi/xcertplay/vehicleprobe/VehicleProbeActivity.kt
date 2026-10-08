@@ -185,7 +185,8 @@ class VehicleProbeActivity : Activity() {
             val start = Intent(this, ProbeService::class.java)
                 .putExtra(EXTRA_HIDE_TOP_BAR, intent.getBooleanExtra(EXTRA_HIDE_TOP_BAR, true))
                 .putExtra(EXTRA_HIDE_BOTTOM_BAR, intent.getBooleanExtra(EXTRA_HIDE_BOTTOM_BAR, true))
-            startForegroundService(start)
+            // carlito | Android 7 has no foreground-service start API.
+            if (Build.VERSION.SDK_INT >= 26) startForegroundService(start) else startService(start)
         }.onSuccess { scan.isEnabled = false }.onFailure {
             Toast.makeText(this, "暂时无法开始扫描，请重试", Toast.LENGTH_LONG).show()
         }

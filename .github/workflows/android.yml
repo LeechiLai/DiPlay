@@ -148,6 +148,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
+            const crypto = require('crypto');
             const version = process.env.APP_VERSION;
             const tag = `v${version}`;
             const assetName = `DiPlay-${version}.apk`;
@@ -186,7 +187,7 @@ jobs:
               make_latest: 'true',
             });
             for (const asset of release.assets) {
-              if (asset.name === assetName) {
+              if (asset.name === assetName || asset.name === 'SHA256SUMS.txt') {
                 await github.rest.repos.deleteReleaseAsset({ owner, repo, asset_id: asset.id });
               }
             }
@@ -200,6 +201,16 @@ jobs:
                 'content-type': 'application/vnd.android.package-archive',
                 'content-length': fs.statSync(apkPath).size,
               },
+            });
+            // carlito | The fork's in-app updater verifies this published APK before installation.
+            const checksums = Buffer.from(`${crypto.createHash('sha256').update(fs.readFileSync(apkPath)).digest('hex')}  ${assetName}\n`, 'utf8');
+            await github.rest.repos.uploadReleaseAsset({
+              owner,
+              repo,
+              release_id: release.id,
+              name: 'SHA256SUMS.txt',
+              data: checksums,
+              headers: { 'content-type': 'text/plain', 'content-length': checksums.length },
             });
             core.notice(`Published ${assetName} to ${tag}`);
       - name: Remove temporary signing key

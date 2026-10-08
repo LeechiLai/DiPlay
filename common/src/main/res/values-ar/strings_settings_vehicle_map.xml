@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_vehicle_map_experimental">خريطة السيارة (تجريبي)</string>
+    <string name="vehicle_audio_output_hint">يستخدم التنقل قناة مستقلة. تمر بقية الأصوات عبر قناة الوسائط. يحافظ إخراج Bluetooth على موسيقى السيارة ويتجنب تكرارها أثناء التشغيل. تظل المكالمات والصوت متاحين. إذا تعذر اكتشاف تشغيل Bluetooth، يستمر CarPlay في تشغيل الصوت. يُطبّق بعد إعادة الاتصال.</string>
+</resources>

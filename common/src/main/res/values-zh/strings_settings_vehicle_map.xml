@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_vehicle_map_experimental">车机地图（实验性）</string>
+    <string name="vehicle_audio_output_hint">导航独立输出，其余声音统一走媒体通道。蓝牙输出保留车机蓝牙音乐，播放时自动避免重复音乐；通话和语音正常播放。无法确认蓝牙播放时，继续使用 CarPlay 声音。重新连接后生效。</string>
+</resources>
